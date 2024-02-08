@@ -1,19 +1,25 @@
 package com.example.quizapp;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
     private List<GalleryItem> galleryItems;
     private Context context;
-    public GalleryAdapter(List<GalleryItem> galleryItems,Context context) {
+
+    public GalleryAdapter(List<GalleryItem> galleryItems, Context context) {
         this.galleryItems = galleryItems;
         this.context = context;
     }
@@ -29,7 +35,13 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         GalleryItem item = galleryItems.get(position);
         holder.nameTextView.setText(item.getName());
-        holder.imageView.setImageResource(item.getImageId());
+
+        if (item.isDrawableResource()) {
+            holder.imageView.setImageResource(item.getImageResId());
+        } else {
+            Uri imageUri = Uri.parse(item.getImagePath());
+            Glide.with(context).load(imageUri).into(holder.imageView);
+        }
     }
 
     @Override

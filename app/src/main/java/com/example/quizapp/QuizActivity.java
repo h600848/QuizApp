@@ -1,16 +1,25 @@
 package com.example.quizapp;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -28,20 +37,8 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
-        // Hardkoder items for testing, det funket
-        // items = new ArrayList<>();
-        // items.add(new GalleryItem("Gorilla", R.drawable.gorilla));
-        // items.add(new GalleryItem("Isbjørn", R.drawable.isbjorn));
-        // items.add(new GalleryItem("Hai", R.drawable.hai));
-
-        // Forsøker å motta GalleryItem-listen som er sendt fra MainActivity
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("galleryItems")) {
-            items = (ArrayList<GalleryItem>) intent.getSerializableExtra("galleryItems");
-        } else {
-            // Hvis ingen data er mottatt, initialiserer items til en tom liste
-            items = new ArrayList<>();
-        }
+        // Henter listen direkte fra GalleryDataManager
+        items = GalleryDataManager.getInstance().getGalleryItems();
 
         // Initialiserer views
         feedbackTextView = findViewById(R.id.feedbackTextView);
@@ -64,14 +61,30 @@ public class QuizActivity extends AppCompatActivity {
         int randomIndex = new Random().nextInt(items.size());
         GalleryItem currentItem = items.get(randomIndex);
 
-        // Henter referanser til bildene(UI-komponenter)
-        quizImageView = findViewById(R.id.quizImageView);
-        choice1 = findViewById(R.id.choice1);
-        choice2 = findViewById(R.id.choice2);
-        choice3 = findViewById(R.id.choice3);
+        if (currentItem.isDrawableResource()) {
+            quizImageView.setImageResource(currentItem.getImageResId());
+        } else {
+            Uri imageUri = Uri.parse(currentItem.getImagePath());
+            // Bruker Glide til å laste bildet med en lytter for å fange opp suksess og feil
+            Glide.with(this)
+                    .load(imageUri)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            // Logger feil hvis bildet ikke kan lastes
+                            Log.e("QuizActivity", "Failed to load image", e);
+                            return false; // False indikerer at Glide ikke håndterer feilen selv
+                        }
 
-        // Viser bildet for valgt GalleryItem
-        quizImageView.setImageResource(currentItem.getImageId());
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            // Logger en melding når bildet er lastet suksessfullt
+                            Log.d("QuizActivity", "Image loaded successfully");
+                            return false; // False indikerer at Glide ikke håndterer ressursen selv
+                        }
+                    })
+                    .into(quizImageView);
+        }
 
         // Setter opp svaralternativer, et riktig og to feil
         List<String> choices = new ArrayList<>();
@@ -112,7 +125,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private void checkAnswer(String selectedAnswer) {
         attempts++;
-        if(selectedAnswer.equals(correctAnswer)) {
+        if (selectedAnswer.equals(correctAnswer)) {
             score++;
             feedbackTextView.setText("Riktig!");
         } else {
@@ -126,6 +139,6 @@ public class QuizActivity extends AppCompatActivity {
             public void run() {
                 setUpQuiz();
             }
-        }, 3500); // Venter 5000 millisekunder (3,5 sekunder) før neste spørsmål settes opp
+        }, 1500); // Venter 1500 millisekunder (1,5 sekunder) før neste spørsmål settes opp
     }
 }
