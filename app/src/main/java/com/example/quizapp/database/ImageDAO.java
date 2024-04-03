@@ -13,14 +13,17 @@ import com.example.quizapp.model.ImageEntity;
 @Dao
 public interface ImageDAO {
     @Insert
-    void insertImage(ImageEntity image);
+    void insertImage(ImageEntity imageEntity);
 
     @Query("SELECT * FROM image_table WHERE imageId = :id")
     List<ImageEntity> findImageById(int id);
 
     @Delete
-    void delete (ImageEntity image);
+    void delete(ImageEntity imageEntity);
 
     @Query("SELECT * FROM image_table")
     LiveData<List<ImageEntity>> getAllImages();
+
+    @Query("DELETE FROM image_table")
+    void deleteAll();
 }

@@ -13,7 +13,7 @@ import com.example.quizapp.model.ImageEntity;
 @TypeConverters({Converter.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract ImageDAO imageDao();
-    private static volatile AppDatabase INSTANCE;
+    private static AppDatabase INSTANCE;
 
     public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {

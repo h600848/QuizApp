@@ -47,4 +47,8 @@ public class ImageRepository {
     public void deleteImage(ImageEntity imageEntity) {
         new Thread(() -> imageDao.delete(imageEntity)).start();
     }
+
+    public void deleteAll() {
+        new Thread(() -> imageDao.deleteAll()).start();
+    }
 }

@@ -16,8 +16,9 @@ import com.example.quizapp.model.ImageEntity;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
-    Context context;
-    List<ImageEntity> images;
+    private final Context context;
+    private List<ImageEntity> images;
+
     private final RecyclerViewInterface recyclerViewInterface;
 
     public RecyclerViewAdapter(Context context, List<ImageEntity> images, RecyclerViewInterface recyclerViewInterface) {
@@ -49,6 +50,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void setImages(List<ImageEntity> images) {
         this.images = images;
         notifyDataSetChanged(); // Varsler om endring i datasettet
+    }
+
+    public List<ImageEntity> getImages() {
+        return images;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

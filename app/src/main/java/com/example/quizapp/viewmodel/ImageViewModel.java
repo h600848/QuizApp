@@ -20,6 +20,10 @@ public class ImageViewModel extends AndroidViewModel {
         allImages = repository.getAllImages();
     }
 
+    public void deleteAll() {
+        repository.deleteAll();
+    }
+
     public LiveData<List<ImageEntity>> getAllImages() {
         return allImages;
     }
