@@ -24,8 +24,4 @@ public class StartImages extends Application {
     public ArrayList<ImageEntity> getImageEntity() {
         return imageEntity;
     }
-
-    public void addContent(ImageEntity content) {
-        ImageEntity.add(content);
-    }
 }

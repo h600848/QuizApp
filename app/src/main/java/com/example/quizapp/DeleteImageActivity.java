@@ -9,8 +9,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.quizapp.R;
-
 public class DeleteImageActivity extends AppCompatActivity {
     private String name;
 

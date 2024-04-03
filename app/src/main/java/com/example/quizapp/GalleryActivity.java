@@ -15,21 +15,22 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.quizapp.R;
 import com.example.quizapp.adapter.RecyclerViewAdapter;
 import com.example.quizapp.adapter.RecyclerViewInterface;
-import com.example.quizapp.database.AppDatabase;
 import com.example.quizapp.model.ImageEntity;
 import com.example.quizapp.viewmodel.ImageViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class GalleryActivity extends AppCompatActivity implements RecyclerViewInterface {
-    private static final int GALLERY_REQUEST = 1; // Class constant for gallery request
+    private static final int GALLERY_REQUEST = 1;
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private ImageViewModel imageViewModel;
     private boolean sorted = true;
     private RecyclerViewAdapter recyclerViewAdapter;
+    private List<ImageEntity> imagesList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,60 +45,37 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         imageViewModel.getAllImages().observe(this, images -> {
-            // Oppdaterer RecyclerViewAdapter med den nye listen av bilder
-            recyclerViewAdapter.setImages(images);
+            imagesList = images; // Oppdater lokal liste
+            refreshRecyclerView();
         });
     }
 
-    /**
-     * @param view The view that triggered this method, typically a sort button in the user interface.
-     */
-    public void sortButton(View view){
-        // Refresh the RecyclerView
-        refreshRecyclerView();
+    public void sortButton(View view) {
+        Collections.sort(imagesList, (o1, o2) -> sorted ? o1.getImageName().compareTo(o2.getImageName()) : o2.getImageName().compareTo(o1.getImageName()));
+        sorted = !sorted; // Endre sorteringstilstand
 
         Button sortButton = (Button) findViewById(R.id.sort_btn);
-        // Må fikse her TODO
-        if (true) {
-            sortButton.setText("Sort A-Z");
-        } else {
-            sortButton.setText("Sort Z-A");
-        }
+        sortButton.setText(sorted ? "Sort Z-A" : "Sort A-Z");
+
+        recyclerViewAdapter.setImages(imagesList);
+        recyclerViewAdapter.notifyDataSetChanged();
     }
 
-    public void addButton(View view){
-        // Launch the gallery to pick an image
+    public void addButton(View view) {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
     }
 
-    /**
-     * Handles the result from launching the gallery for image selection.
-     * If the result is OK and the request code matches, prompts the user to enter a name for the new image.
-     *
-     * @param requestCode The integer request code originally supplied to startActivityForResult(),
-     *                    allowing identification of who this result came from.
-     * @param resultCode  The integer result code returned by the child activity through its setResult().
-     * @param data        An Intent, which can return result data to the caller (various data can be attached as Extras).
-     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == GALLERY_REQUEST) {
             Uri imageUri = data.getData();
-            // Prompt for entering a name
             promptForImageName(imageUri);
         }
     }
 
-    /**
-     * Displays a dialog prompting the user to enter a name for the new image selected from the gallery.
-     * If a name is entered and confirmed with "OK", a new ImageEntity instance is created and added to the database.
-     * The RecyclerView is then refreshed to include the newly added animal.
-     *
-     * @param imageUri The URI of the selected image to be associated with the new image.
-     */
     private void promptForImageName(Uri imageUri) {
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -109,6 +87,8 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
                     if (!name.isEmpty()) {
                         ImageEntity newImage = new ImageEntity(name, imageUri);
                         imageViewModel.insertImage(newImage);
+                        imagesList.add(newImage);
+                        refreshRecyclerView();
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -116,26 +96,12 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
     }
 
     private void refreshRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.myRecyclerView);
-        RecyclerViewAdapter adapter = (RecyclerViewAdapter) recyclerView.getAdapter();
-        if (adapter != null) {
-            adapter.notifyDataSetChanged(); // Notify the adapter to refresh the view
-        }
+        recyclerViewAdapter.setImages(imagesList);
+        recyclerViewAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onItemClick(int position) {
-        // Hent informasjon om bildet basert på posisjon - dette krever endringer i ViewModel
-        // For demonstrasjonsformål antar vi at ImageViewModel har en metode for å hente ImageEntity basert på ID/posisjon
-        //    imageViewModel.getImageById(position).observe(this, imageEntity -> {
-        //        if (imageEntity != null) {
-        //            // Starter DeleteImageActivity med bildeinformasjon
-        //            Intent intent = new Intent(this, DeleteImageActivity.class);
-        //            intent.putExtra("NAME", imageEntity.getImageName());
-        //            Uri imageUri = Uri.parse(imageEntity.getImagePath());
-        //            intent.putExtra("IMAGE", imageUri.toString());
-        //            startActivity(intent);
-        //        }
-        //    });
+        // Implementasjonen her avhenger av funksjonaliteten du ønsker å implementere ved klikk
     }
 }
