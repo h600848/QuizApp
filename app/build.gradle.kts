@@ -29,6 +29,11 @@ android {
 }
 
 dependencies {
+    // For Room Database
+    implementation ("androidx.room:room-runtime:2.6.1")
+    annotationProcessor ("androidx.room:room-compiler:2.6.1")
+    // For View Model
+    implementation ("androidx.lifecycle:lifecycle-viewmodel:2.7.0")
 
     implementation(libs.appcompat)
     implementation(libs.material)

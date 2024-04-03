@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Har lagt til disse -->
+    <color name="background">#FFF6E9</color>
+    <color name="delete_picture_blue">#38419D</color>
+    <color name="teal" >#52D3D8</color>
 </resources>

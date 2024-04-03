@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">QuizApp</string>
+
+    <!-- Main Activity -->
+    <string name="quizTime">Quiz Time</string>
+    <string name="play">Play</string>
+    <string name="gallery">Gallery</string>
+
+    <!-- Gallery Activity -->
+    <string name="addPicture">Add Picture</string>
+    <string name="sort">Sort</string>
+
+    <!-- Delete Picture Activity -->
+    <string name="delete">Delete</string>
+    <string name="image_name">Image Name</string>
+
 </resources>
