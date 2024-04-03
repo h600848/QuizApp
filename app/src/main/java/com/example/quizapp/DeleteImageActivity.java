@@ -29,10 +29,6 @@ public class DeleteImageActivity extends AppCompatActivity {
         imageView.setImageURI(imageUri);
     }
 
-    /**
-     *
-     * @param view The view that triggered this method, typically a button in the user interface.
-     */
     public void deleteButton(View view){
         // Bruker AlertDialog.Builder for å bygge og vise en dialogboks til brukeren
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
