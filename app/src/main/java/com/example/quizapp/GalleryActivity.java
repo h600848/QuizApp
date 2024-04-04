@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quizapp.adapter.RecyclerViewAdapter;
@@ -17,10 +18,12 @@ import com.example.quizapp.adapter.RecyclerViewInterface;
 import com.example.quizapp.model.ImageEntity;
 import com.example.quizapp.viewmodel.ImageViewModel;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public abstract class GalleryActivity extends AppCompatActivity implements RecyclerViewInterface {
+public class GalleryActivity extends AppCompatActivity implements RecyclerViewInterface {
+    private static final int GALLERY_REQUEST = 1; // Class constant for gallery request
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private ImageViewModel imageViewModel;
     private boolean sorted = true;
@@ -32,15 +35,22 @@ public abstract class GalleryActivity extends AppCompatActivity implements Recyc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
+
         imageViewModel = new ViewModelProvider(this).get(ImageViewModel.class);
+        recyclerViewAdapter = new RecyclerViewAdapter(this, new ArrayList<>(), this);
+
+        imageViewModel.getAllImages().observe(this, images -> {
+            // Oppdaterer RecyclerViewAdapter med den nye listen av bilder
+            recyclerViewAdapter.setImages(images);
+        });
 
         setupActivityResultLauncher();
         setupView();
         setupButtons();
-        observerSetup();
+        observeSetup();
     }
 
-    private void observerSetup() {
+    private void observeSetup() {
         imageViewModel.getAllImages().observe(this, imageEntities -> {
             if (imageEntities.isEmpty()) {
                 imageViewModel.insertImage(new ImageEntity("Gorilla", Uri.parse("android.resource://com.example.quizapp/" + R.drawable.gorilla)));
@@ -56,7 +66,8 @@ public abstract class GalleryActivity extends AppCompatActivity implements Recyc
 
     private void setupView() {
         recyclerView = findViewById(R.id.myRecyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        recyclerView.setAdapter(recyclerViewAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void setupActivityResultLauncher() {
@@ -109,5 +120,10 @@ public abstract class GalleryActivity extends AppCompatActivity implements Recyc
     private void launchImageActivity() {
         Intent intent = new Intent(GalleryActivity.this, DeleteImageActivity.class);
         activityResultLauncher.launch(intent);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
     }
 }
