@@ -7,12 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.quizapp.model.ImageEntity;
 import com.example.quizapp.viewmodel.ImageViewModel;
@@ -31,6 +33,8 @@ public class AddNewImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_image);
 
+        imageViewModel = new ViewModelProvider(this).get(ImageViewModel.class);
+
         imageView = findViewById(R.id.chosenImageView);
 
         Button chooseImageButton = findViewById(R.id.chooseImageButton);
@@ -38,7 +42,7 @@ public class AddNewImageActivity extends AppCompatActivity {
 
         Button saveButton = findViewById(R.id.saveButton);
 
-        EditText text = findViewById(R.id.imageNameInput);
+        TextView text = findViewById(R.id.imageNameInput);
 
 
         saveButton.setOnClickListener(new View.OnClickListener() {
