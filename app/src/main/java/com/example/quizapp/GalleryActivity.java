@@ -36,7 +36,7 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
 
         imageViewModel = new ViewModelProvider(this).get(ImageViewModel.class);
 
-        setupActivityResultLauncher();
+        // setupActivityResultLauncher();
         setupView();
         observeSetup();
     }
@@ -94,9 +94,12 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
 
     public void addButton(View view) {
         // Launch the gallery to pick an image
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+        // Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        // photoPickerIntent.setType("image/*");
+        // startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+
+        Intent intent = new Intent(this, AddNewImageActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -114,7 +117,7 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
         });
     }
 
-
+/*
     private void handleActivityResult(Intent data) {
         if (data != null) {
             Uri uri = Uri.parse(data.getStringExtra("imageUri"));
@@ -127,6 +130,8 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
         }
     }
 
+ */
+/*
     private void setupActivityResultLauncher() {
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -135,4 +140,6 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
                     }
                 });
     }
+
+ */
 }
