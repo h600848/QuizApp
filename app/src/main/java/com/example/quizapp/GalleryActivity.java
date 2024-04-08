@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,12 +16,9 @@ import com.example.quizapp.adapter.RecyclerViewInterface;
 import com.example.quizapp.model.ImageEntity;
 import com.example.quizapp.viewmodel.ImageViewModel;
 
-import java.util.Collections;
 import java.util.Comparator;
 
 public class GalleryActivity extends AppCompatActivity implements RecyclerViewInterface {
-    private static final int GALLERY_REQUEST = 1; // Class constant for gallery request
-    private ActivityResultLauncher<Intent> activityResultLauncher;
     private ImageViewModel imageViewModel;
     private boolean sorted = true;
     private RecyclerView recyclerView;
@@ -93,11 +88,6 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
     }
 
     public void addButton(View view) {
-        // Launch the gallery to pick an image
-        // Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        // photoPickerIntent.setType("image/*");
-        // startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
-
         Intent intent = new Intent(this, AddNewImageActivity.class);
         startActivity(intent);
     }
@@ -108,7 +98,6 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
             if (imageEntity != null) {
                 // Starter DeleteImageActivity med bildeinformasjon
                 Intent intent = new Intent(this, DeleteImageActivity.class);
-                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.putExtra("NAME", imageEntity.getImageName());
                 Uri imageUri = Uri.parse(imageEntity.getImagePath().toString());
                 intent.putExtra("IMAGE", imageUri.toString());
@@ -116,30 +105,4 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
             }
         });
     }
-
-/*
-    private void handleActivityResult(Intent data) {
-        if (data != null) {
-            Uri uri = Uri.parse(data.getStringExtra("imageUri"));
-
-            // Her setter vi flagget for å gi tillatelse til å lese URI-en
-            getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-            String name = data.getStringExtra("inputText");
-            recyclerViewAdapter.setImages(Collections.singletonList(new ImageEntity(name, uri)));
-        }
-    }
-
- */
-/*
-    private void setupActivityResultLauncher() {
-        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK) {
-                        handleActivityResult(result.getData());
-                    }
-                });
-    }
-
- */
 }

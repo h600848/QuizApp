@@ -18,7 +18,6 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
     private final Context context;
     private List<ImageEntity> images;
-
     private final RecyclerViewInterface recyclerViewInterface;
 
     public RecyclerViewAdapter(Context context, List<ImageEntity> images, RecyclerViewInterface recyclerViewInterface) {

@@ -13,7 +13,6 @@ public class ImageEntity {
     private int imageId; // ID-en genereres automatisk
 
     private final String imageName;
-
     private final Uri imagePath;
 
     public ImageEntity(String imageName, Uri imagePath) {

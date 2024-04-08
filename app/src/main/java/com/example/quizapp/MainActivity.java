@@ -25,13 +25,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void galleryButton(View view) {
         Intent intent = new Intent(this, GalleryActivity.class);
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(intent);
     }
 
     public void playButton(View view) {
         Intent intent = new Intent(this, QuizActivity.class);
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(intent);
     }
 
