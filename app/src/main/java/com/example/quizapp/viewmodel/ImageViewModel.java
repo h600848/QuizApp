@@ -39,4 +39,8 @@ public class ImageViewModel extends AndroidViewModel {
     public LiveData<ImageEntity> getImageById(int id) {
         return repository.getImageById(id);
     }
+
+    public void deleteImageById(int id) {
+        repository.deleteImageById(id);
+    }
 }

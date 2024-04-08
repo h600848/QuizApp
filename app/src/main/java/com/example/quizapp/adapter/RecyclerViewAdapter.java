@@ -39,6 +39,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         holder.textView.setText(image.getImageName());
         holder.imageView.setImageURI(image.getImagePath());
+
+        holder.itemView.setOnClickListener(v -> {
+            if (position != RecyclerView.NO_POSITION && recyclerViewInterface != null) {
+                int imageId = images.get(position).getImageId(); // Hent ID her
+                recyclerViewInterface.onItemClick(imageId); // Send ID istedenfor posisjon
+            }
+        });
     }
 
     @Override
@@ -67,11 +74,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (recyclerViewInterface != null) {
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION) {
-                            recyclerViewInterface.onItemClick(position);
-                        }
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && recyclerViewInterface != null) {
+                        recyclerViewInterface.onItemClick(position);
                     }
                 }
             });

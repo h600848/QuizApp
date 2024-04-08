@@ -1,6 +1,7 @@
 package com.example.quizapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.app.AlertDialog;
 import android.net.Uri;
@@ -9,17 +10,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.quizapp.viewmodel.ImageViewModel;
+
 public class DeleteImageActivity extends AppCompatActivity {
-    private String name;
+    private int imageId = -1; // For å lagre bildets ID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_image);
 
-        name = getIntent().getStringExtra("NAME");
-
-        String imageUriString = getIntent().getStringExtra("IMAGE");
+        imageId = getIntent().getIntExtra("IMAGE_ID", -1); // Henter bildets ID
+        String name = getIntent().getStringExtra("NAME");
+        String imageUriString = getIntent().getStringExtra("IMAGE_URI");
         Uri imageUri = Uri.parse(imageUriString);
 
         TextView textView = findViewById(R.id.textView_delete_picture);
@@ -35,12 +38,13 @@ public class DeleteImageActivity extends AppCompatActivity {
         builder.setTitle("Delete picture");
         builder.setMessage("Are you sure you want to delete the picture?");
         builder.setPositiveButton("Delete", (dialog, which) -> {
-            // Sletter elementet fra listen
-            // Hvordan gjør jeg det?
-            // TODO
+            if (imageId != -1) {
+                ImageViewModel imageViewModel = new ViewModelProvider(this).get(ImageViewModel.class);
+                imageViewModel.deleteImageById(imageId);
+                finish(); // Lukker aktiviteten og returnerer til forrige skjerm
+            }
         });
         builder.setNegativeButton("Cancel", null);
-
         AlertDialog dialog = builder.create();
         dialog.show();
     }

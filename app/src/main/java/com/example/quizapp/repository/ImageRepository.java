@@ -55,4 +55,8 @@ public class ImageRepository {
     public LiveData<ImageEntity> getImageById(int id) {
         return imageDao.getImageById(id);
     }
+
+    public void deleteImageById(int id) {
+        new Thread(() -> imageDao.deleteImageById(id)).start();
+    }
 }

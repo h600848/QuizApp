@@ -93,14 +93,15 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
     }
 
     @Override
-    public void onItemClick(int position) {
-        imageViewModel.getImageById(position).observe(this, imageEntity -> {
+    public void onItemClick(int imageId) {
+        imageViewModel.getImageById(imageId).observe(this, imageEntity -> {
             if (imageEntity != null) {
                 // Starter DeleteImageActivity med bildeinformasjon
                 Intent intent = new Intent(this, DeleteImageActivity.class);
                 intent.putExtra("NAME", imageEntity.getImageName());
                 Uri imageUri = Uri.parse(imageEntity.getImagePath().toString());
-                intent.putExtra("IMAGE", imageUri.toString());
+                intent.putExtra("IMAGE_URI", imageUri.toString());
+                intent.putExtra("IMAGE_ID", imageEntity.getImageId()); // Legger til IMAGE_ID
                 startActivity(intent);
             }
         });

@@ -26,4 +26,7 @@ public interface ImageDAO {
 
     @Query("DELETE FROM image_table")
     void deleteAll();
+
+    @Query("DELETE FROM image_table WHERE imageId = :id")
+    void deleteImageById(int id);
 }
