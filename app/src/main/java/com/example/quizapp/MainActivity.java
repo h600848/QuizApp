@@ -4,11 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.quizapp.model.ImageEntity;
 import com.example.quizapp.viewmodel.ImageViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         imageViewModel = new ViewModelProvider(this).get(ImageViewModel.class);
-        startPictures();
     }
 
     public void galleryButton(View view) {
@@ -31,15 +28,5 @@ public class MainActivity extends AppCompatActivity {
     public void playButton(View view) {
         Intent intent = new Intent(this, QuizActivity.class);
         startActivity(intent);
-    }
-
-    private void startPictures() {
-        imageViewModel.getAllImages().observe(this, imageEntities -> {
-            if (imageEntities.isEmpty()) {
-                imageViewModel.insertImage(new ImageEntity("Gorilla", Uri.parse("android.resource://com.example.quizapp/" + R.drawable.gorilla)));
-                imageViewModel.insertImage(new ImageEntity("Polar bear", Uri.parse("android.resource://com.example.quizapp/" + R.drawable.isbjorn)));
-                imageViewModel.insertImage(new ImageEntity("Fox", Uri.parse("android.resource://com.example.quizapp/" + R.drawable.fox)));
-            }
-        });
     }
 }
