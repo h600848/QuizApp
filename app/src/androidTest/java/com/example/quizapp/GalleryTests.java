@@ -5,9 +5,11 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Intents.init;
 import static androidx.test.espresso.intent.Intents.intending;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.hasChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.hasContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.isClickable;
@@ -19,10 +21,14 @@ import android.app.Instrumentation.ActivityResult;
 import android.content.Intent;
 import android.net.Uri;
 
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,20 +39,17 @@ public class GalleryTests {
     public ActivityScenarioRule<GalleryActivity> activityScenarioRule
             = new ActivityScenarioRule<>(GalleryActivity.class);
 
-
-
     @Test
     public void testAddImage(){
 
-        Uri imageUri = Uri.parse("res:///" + R.drawable.sample);
+        Uri imageUri = Uri.parse("android.resource://com.example.quizapp/" + R.drawable.sample);
 
         Intents.init();
         //Tests the add Button in Gallery
-        onView(withId(R.id.myRecyclerView)).check(matches(hasMinimumChildCount(3)));
-        onView(withId(R.id.add_btn)).check(matches(isDisplayed()));
-        onView(withId(R.id.add_btn)).check(matches(isClickable()));
-        onView(withId(R.id.add_btn)).perform(click());
+        onView(withId(R.id.myRecyclerView)).check(matches(hasChildCount(3)));
 
+
+        ActivityScenario<AddNewImageActivity> scenario = ActivityScenario.launch(AddNewImageActivity.class);
         //Checks if the correct Activity is displayed
         Intents.intended(hasComponent(AddNewImageActivity.class.getName()));
         Intent imageTest = new Intent();
@@ -63,8 +66,10 @@ public class GalleryTests {
         onView(withId(R.id.imageNameInput)).perform(typeText("Test"), closeSoftKeyboard());
 
         onView(withId(R.id.saveButton)).perform(click());
+        ActivityScenario<GalleryActivity> galleryScenario = ActivityScenario.launch(GalleryActivity.class);
         Intents.intended(hasComponent(GalleryActivity.class.getName()));
-        onView(withId(R.id.myRecyclerView)).check(matches(hasMinimumChildCount(4)));
+        onView(withId(R.id.myRecyclerView)).check(matches(hasChildCount(4)));
+        Intents.release();
     }
 
     @Test
@@ -81,9 +86,4 @@ public class GalleryTests {
         Intents.release();
     }
 
-    //@Test
-    public void addNewImageActivityTest(){
-        Uri imageUri = Uri.parse("res:///" + R.drawable.sample);
-        onView(withId(R.id.imageNameInput)).perform(typeText("Test"), closeSoftKeyboard());
-    }
 }

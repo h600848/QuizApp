@@ -2,13 +2,10 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="AddNewImageTests">
+        <State />
+      </entry>
       <entry key="GalleryTests">
-        <State />
-      </entry>
-      <entry key="MainMenuTests">
-        <State />
-      </entry>
-      <entry key="QuizTests">
         <State />
       </entry>
       <entry key="app">
