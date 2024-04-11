@@ -9,6 +9,7 @@ import static androidx.test.espresso.intent.Intents.intending;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.hasContentDescription;
+import static androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.isClickable;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -41,6 +42,7 @@ public class GalleryTests {
 
         Intents.init();
         //Tests the add Button in Gallery
+        onView(withId(R.id.myRecyclerView)).check(matches(hasMinimumChildCount(3)));
         onView(withId(R.id.add_btn)).check(matches(isDisplayed()));
         onView(withId(R.id.add_btn)).check(matches(isClickable()));
         onView(withId(R.id.add_btn)).perform(click());
@@ -60,7 +62,9 @@ public class GalleryTests {
 
         onView(withId(R.id.imageNameInput)).perform(typeText("Test"), closeSoftKeyboard());
 
-
+        onView(withId(R.id.saveButton)).perform(click());
+        Intents.intended(hasComponent(GalleryActivity.class.getName()));
+        onView(withId(R.id.myRecyclerView)).check(matches(hasMinimumChildCount(4)));
     }
 
     @Test

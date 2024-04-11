@@ -27,7 +27,7 @@ public class QuizTests {
         onView(withId(R.id.btn_1)).perform(click());
         ViewInteraction scoreText = onView(withId(R.id.textView_Quiz));
         try {
-            scoreText.check(matches(withText("Correct! Score: 1")));
+            scoreText.check(matches(withSubstring("Correct!")));
         } catch (AssertionError e){
             scoreText.check(matches(withSubstring("Wrong!")));
         }

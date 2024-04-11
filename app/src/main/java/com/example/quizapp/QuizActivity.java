@@ -62,13 +62,17 @@ public class QuizActivity extends AppCompatActivity {
 
     private void checkAnswer(String selectedAnswer, String correctAnswer) {
         if (selectedAnswer.equals(correctAnswer)) {
-            Toast.makeText(this, "Riktig!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Riktig!", Toast.LENGTH_SHORT).show();
             imageViewModel.incrementScore();
+            imageViewModel.incrementAttempts();
+            textViewQuiz.setText("Correct! Score: " + imageViewModel.getScore() + "   Attempts: " + imageViewModel.getAttempts());
         } else {
-            Toast.makeText(this, "Feil, prøv igjen.", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Feil, prøv igjen.", Toast.LENGTH_SHORT).show();
+            imageViewModel.incrementAttempts();
+            textViewQuiz.setText("Wrong! Score: " + imageViewModel.getScore() + "   Attempts: " + imageViewModel.getAttempts());
         }
-        imageViewModel.incrementAttempts();
-        textViewQuiz.setText("Score: " + imageViewModel.getScore() + "   Attempts: " + imageViewModel.getAttempts());
+        // imageViewModel.incrementAttempts();
+        // textViewQuiz.setText("Score: " + imageViewModel.getScore() + "   Attempts: " + imageViewModel.getAttempts());
         setupViewModel(); // Oppdater viewmodellen for neste runde
     }
 }
