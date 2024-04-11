@@ -13,4 +13,4 @@ QuizApp is an Android application designed for users to participate in image-bas
 Clone the repository and import it into Android Studio for development. Make sure Android Studio and the Android SDK are up to date.
 
 ```bash
-git clone
+git clone https://github.com/h600848/QuizApp.git

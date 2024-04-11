@@ -58,10 +58,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         notifyDataSetChanged(); // Varsler om endring i datasettet
     }
 
-    public List<ImageEntity> getImages() {
-        return images;
-    }
-
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
         ImageView imageView;

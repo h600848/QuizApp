@@ -31,7 +31,6 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
 
         imageViewModel = new ViewModelProvider(this).get(ImageViewModel.class);
 
-        // setupActivityResultLauncher();
         setupView();
         observeSetup();
     }

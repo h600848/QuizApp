@@ -44,14 +44,6 @@ public class ImageRepository {
         task.execute(imageEntity);
     }
 
-    public void deleteImage(ImageEntity imageEntity) {
-        new Thread(() -> imageDao.delete(imageEntity)).start();
-    }
-
-    public void deleteAll() {
-        new Thread(() -> imageDao.deleteAll()).start();
-    }
-
     public LiveData<ImageEntity> getImageById(int id) {
         return imageDao.getImageById(id);
     }

@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.quizapp.model.ImageEntity;
 import com.example.quizapp.viewmodel.ImageViewModel;
@@ -28,6 +27,18 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
         bindViews();
         setupViewModel();
+
+        // For rotasjon
+        if (savedInstanceState != null) {
+            textViewQuiz.setText(savedInstanceState.getString("currentQuizText", ""));
+
+            // Gjenoppretter bildets URI fra savedInstanceState og oppdaterer ViewModel
+            String savedImageUriAsString = savedInstanceState.getString("currentImageUri");
+            if(savedImageUriAsString != null) {
+                Uri savedImageUri = Uri.parse(savedImageUriAsString);
+                imageViewModel.setCurrentImageUri(savedImageUri);
+            }
+        }
     }
 
     private void bindViews() {
@@ -46,7 +57,13 @@ public class QuizActivity extends AppCompatActivity {
     private void prepareNextRound(List<ImageEntity> imageEntities) {
         if (!imageEntities.isEmpty()) {
             ImageEntity currentImage = imageViewModel.selectRandomImage(imageEntities);
-            quizImageView.setImageURI(Uri.parse(currentImage.getImagePath().toString()));
+            // Konverterer bildets sti til en URI
+            Uri currentUri = Uri.parse(currentImage.getImagePath().toString());
+            // Oppdaterer ViewModel med den nåværende bildets URI
+            imageViewModel.setCurrentImageUri(currentUri);
+            // Setter bildet i ImageView basert på URI
+            quizImageView.setImageURI(currentUri);
+
             List<String> answers = imageViewModel.prepareAnswers(imageEntities, currentImage);
             Collections.shuffle(answers);
 
@@ -62,17 +79,25 @@ public class QuizActivity extends AppCompatActivity {
 
     private void checkAnswer(String selectedAnswer, String correctAnswer) {
         if (selectedAnswer.equals(correctAnswer)) {
-            //Toast.makeText(this, "Riktig!", Toast.LENGTH_SHORT).show();
             imageViewModel.incrementScore();
             imageViewModel.incrementAttempts();
             textViewQuiz.setText("Correct! Score: " + imageViewModel.getScore() + "   Attempts: " + imageViewModel.getAttempts());
         } else {
-            //Toast.makeText(this, "Feil, prøv igjen.", Toast.LENGTH_SHORT).show();
             imageViewModel.incrementAttempts();
             textViewQuiz.setText("Wrong! Score: " + imageViewModel.getScore() + "   Attempts: " + imageViewModel.getAttempts());
         }
-        // imageViewModel.incrementAttempts();
-        // textViewQuiz.setText("Score: " + imageViewModel.getScore() + "   Attempts: " + imageViewModel.getAttempts());
         setupViewModel(); // Oppdater viewmodellen for neste runde
+    }
+
+    // For rotasjon
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("currentQuizText", textViewQuiz.getText().toString());
+        // Henter den nåværende bildets URI som en streng fra ViewModel og lagrer den
+        String imageUriAsString = imageViewModel.getCurrentImageUriAsString();
+        if(imageUriAsString != null) {
+            outState.putString("currentImageUri", imageUriAsString);
+        }
     }
 }
