@@ -34,6 +34,11 @@ dependencies {
     annotationProcessor ("androidx.room:room-compiler:2.6.1")
     // For View Model
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.7.0")
+    // For Espresso Test
+    androidTestImplementation("androidx.test:runner:1.4.0")
+    androidTestImplementation ("androidx.test:rules:1.4.0")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.4.0")
+    implementation("androidx.test.espresso:espresso-intents:3.5.1")
 
     implementation(libs.appcompat)
     implementation(libs.material)

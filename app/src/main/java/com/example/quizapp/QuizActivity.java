@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.example.quizapp.model.ImageEntity;
 import com.example.quizapp.viewmodel.ImageViewModel;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,7 +28,6 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
         bindViews();
         setupViewModel();
-        // Fjernet dobbel kall til prepareNextRound for å unngå forvirring
     }
 
     private void bindViews() {
