@@ -15,28 +15,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+// Definerer ImageViewModel-klassen som håndterer UI-relatert data.
 public class ImageViewModel extends AndroidViewModel {
     private ImageRepository repository;
     private LiveData<List<ImageEntity>> allImages;
     private int score = 0;
     private int attempts = 0;
+
     // Ny variabel for å lagre URI-en til det nåværende bildet
     private MutableLiveData<Uri> currentImageUri = new MutableLiveData<>();
 
+    // Konstruktør som initialiserer repository og henter alle bilder.
     public ImageViewModel(@NonNull Application application) {
         super(application);
         repository = new ImageRepository(application);
         allImages = repository.getAllImages();
     }
 
+    // Returnerer LiveData med alle bilder.
     public LiveData<List<ImageEntity>> getAllImages() {
         return allImages;
     }
 
+    // Velger et tilfeldig bilde fra listen for quiz.
     public ImageEntity selectRandomImage(List<ImageEntity> images) {
         return images.get(new Random().nextInt(images.size()));
     }
 
+    // Forbereder et sett med mulige svar for quiz.
     public List<String> prepareAnswers(List<ImageEntity> images, ImageEntity correctImage) {
         List<String> answers = new ArrayList<>();
         answers.add(correctImage.getImageName());
@@ -65,31 +71,32 @@ public class ImageViewModel extends AndroidViewModel {
         attempts++;
     }
 
-    // Metode for å sette inn et bilde
+    // Setter inn et bilde i databasen.
     public void insertImage(ImageEntity imageEntity) {
         repository.insertImage(imageEntity);
     }
 
-    // Metode for å slette et bilde med ID
+    // Sletter et bilde med ID.
     public void deleteImageById(int id) {
         repository.deleteImageById(id);
     }
 
-    // Metode for å hente et bilde med ID
+    // Henter et bilde med ID.
     public LiveData<ImageEntity> getImageById(int id) {
         return repository.getImageById(id);
     }
 
-    // Getter for bildets URI
+    // Returnerer LiveData for bildets URI.
     public LiveData<Uri> getCurrentImageUri() {
         return currentImageUri;
     }
 
-    // Setter for bildets URI
+    // Setter URI for det nåværende bildet.
     public void setCurrentImageUri(Uri uri) {
         currentImageUri.setValue(uri);
     }
 
+    // Returnerer bildets URI som en streng.
     public String getCurrentImageUriAsString() {
         Uri currentUri = currentImageUri.getValue();
         return (currentUri != null) ? currentUri.toString() : null;

@@ -12,6 +12,7 @@ public class ImageEntity {
     @NonNull
     private int imageId; // ID-en genereres automatisk
 
+    // Bruker final da verdien av variabelen ikke skal endre seg.
     private final String imageName;
     private final Uri imagePath;
 
