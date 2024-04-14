@@ -24,16 +24,6 @@ public class MainMenuTests {
     public ActivityScenarioRule<MainActivity> activityScenarioRule
             = new ActivityScenarioRule<>(MainActivity.class);
 
-    /* Old version
-    @Test
-    public void navigateToQuizActivity() {
-
-        onView(withId(R.id.gallery_btn)).perform(click());
-        onView(withId(R.id.myRecyclerView)).check(matches(isDisplayed()));
-    }
-
-     */
-
     @Test
     public void testPlayButton(){
         //Initialiserer Intents-testrammeverket for å fange opp alle intents som sendes.

@@ -23,13 +23,15 @@ public class QuizTests {
             = new ActivityScenarioRule<>(QuizActivity.class);
 
     @Test
-    public void scoreTestV2(){
+    public void scoreTestV2() throws InterruptedException{
+        Thread.sleep(2000);
+
         onView(withId(R.id.btn_1)).perform(click());
         ViewInteraction scoreText = onView(withId(R.id.textView_Quiz));
         try {
-            scoreText.check(matches(withSubstring("Correct!")));
+            scoreText.check(matches(withSubstring("Correct! Score: ")));
         } catch (AssertionError e){
-            scoreText.check(matches(withSubstring("Wrong!")));
+            scoreText.check(matches(withSubstring("Wrong! Score: ")));
         }
     }
 }
