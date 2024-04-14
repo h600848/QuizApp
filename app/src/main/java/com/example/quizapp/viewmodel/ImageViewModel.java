@@ -22,6 +22,9 @@ import java.util.Random;
  */
 public class ImageViewModel extends AndroidViewModel {
     private ImageRepository repository; // Repository som håndterer databasetilgang
+    /**
+     * LiveData i Room hjelper til med å holde brukergrensesnittet oppdatert med de nyeste dataene fra databasen automatisk
+     */
     private LiveData<List<ImageEntity>> allImages; // LiveData som holder alle bildene fra databasen
     private int score = 0;
     private int attempts = 0;
@@ -31,8 +34,11 @@ public class ImageViewModel extends AndroidViewModel {
 
     /**
      * Konstruktør som tar en applikasjon som parameter og initialiserer ImageRepository samt laster inn alle bildene.
+     * Man må ha en default konstruktør.
      *
      * @param application Gir kontekst og tilgang til applikasjonens livssyklus.
+     * Application Context i Android er en versjon av Context som varer så lenge appen kjører. Den brukes når du trenger å gjøre noe som
+     * ikke er knyttet til en spesifikk aktivitet.
      */
     public ImageViewModel(@NonNull Application application) {
         super(application);

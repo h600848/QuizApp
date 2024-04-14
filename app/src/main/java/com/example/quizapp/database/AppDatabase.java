@@ -12,6 +12,7 @@ import com.example.quizapp.model.ImageEntity;
 /**
  * Definerer en Room Database med en tabell basert på ImageEntity-klassen.
  * Denne klassen håndterer databaseversjonering og konvertering av spesialiserte datatyper via TypeConverters.
+ * En abstrakt klasse kan fordi man må ha en instanse av appDatabasen. 
  */
 @Database(entities = {ImageEntity.class}, version = 1)
 @TypeConverters({Converter.class})

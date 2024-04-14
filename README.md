@@ -21,3 +21,5 @@ git clone https://github.com/h600848/QuizApp.git
 - Ikke samme bilde to ganger etterhverandre i quizen
 - Fikse at samme bilde blir beholdt ved rotasjon
 - Delete test
+- Error catching
+- Hvit felt på quiz activity
