@@ -15,11 +15,3 @@ Clone the repository and import it into Android Studio for development. Make sur
 ```bash
 git clone https://github.com/h600848/QuizApp.git
 ```
-
-## ToDo
-- Check for at Quizen ikke kræsjer med mindre enn to bilder
-- Ikke samme bilde to ganger etterhverandre i quizen
-- Fikse at samme bilde blir beholdt ved rotasjon
-- Delete test
-- Error catching
-- Hvit felt på quiz activity
