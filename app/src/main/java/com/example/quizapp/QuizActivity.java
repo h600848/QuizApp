@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.quizapp.model.ImageEntity;
 import com.example.quizapp.viewmodel.ImageViewModel;
@@ -80,16 +81,24 @@ public class QuizActivity extends AppCompatActivity {
             // Setter bildet i ImageView basert på URI
             quizImageView.setImageURI(currentUri);
 
-            List<String> answers = imageViewModel.prepareAnswers(imageEntities, currentImage);
-            Collections.shuffle(answers);
+            try{
+                List<String> answers = imageViewModel.prepareAnswers(imageEntities, currentImage);
+                Collections.shuffle(answers);
 
-            answerButton1.setText(answers.get(0));
-            answerButton2.setText(answers.get(1));
-            answerButton3.setText(answers.size() > 2 ? answers.get(2) : "N/A");
+                answerButton1.setText(answers.get(0));
+                answerButton2.setText(answers.get(1));
+                answerButton3.setText(answers.size() > 2 ? answers.get(2) : "N/A");
 
-            answerButton1.setOnClickListener(v -> checkAnswer(answers.get(0), currentImage.getImageName()));
-            answerButton2.setOnClickListener(v -> checkAnswer(answers.get(1), currentImage.getImageName()));
-            answerButton3.setOnClickListener(v -> checkAnswer(answers.size() > 2 ? answers.get(2) : "", currentImage.getImageName()));
+                answerButton1.setOnClickListener(v -> checkAnswer(answers.get(0), currentImage.getImageName()));
+                answerButton2.setOnClickListener(v -> checkAnswer(answers.get(1), currentImage.getImageName()));
+                answerButton3.setOnClickListener(v -> checkAnswer(answers.size() > 2 ? answers.get(2) : "", currentImage.getImageName()));
+            }catch (IllegalStateException e){
+                // Viser en feilmelding til brukeren f.eks. via en Toast
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+
+
+            }
+
         }
     }
 

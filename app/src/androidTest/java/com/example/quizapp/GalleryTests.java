@@ -118,9 +118,5 @@ public class GalleryTests {
         Intents.release();
     }
 
-    @Test
-    public void testDeleteImageFromRecyclerView(){
-        
-    }
 
 }

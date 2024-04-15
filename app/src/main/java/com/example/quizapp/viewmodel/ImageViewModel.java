@@ -73,6 +73,11 @@ public class ImageViewModel extends AndroidViewModel {
      * @return En liste med svaralternativer.
      */
     public List<String> prepareAnswers(List<ImageEntity> images, ImageEntity correctImage) {
+        if (images.size() < 3) {
+            // Hvis det er mindre enn tre bilder, kaste en unntak.
+            // Du kan også velge å sende en feilmelding til UI gjennom LiveData her.
+            throw new IllegalStateException("Please have at least 3 pictures in the gallery.");
+        }
         List<String> answers = new ArrayList<>();
         answers.add(correctImage.getImageName());
         while (answers.size() < 3) {
