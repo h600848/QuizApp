@@ -70,9 +70,15 @@ public class GalleryTests {
         // Initialsjekk for antall elementer i RecyclerView
         onView(withId(R.id.myRecyclerView)).check(matches(hasChildCount(3)));
 
+        //Tests the add Button in Gallery
+        onView(withId(R.id.add_btn)).check(matches(isDisplayed()));
+        onView(withId(R.id.add_btn)).check(matches(isClickable()));
+        onView(withId(R.id.add_btn)).perform(click());
+        //Checks if the correct Activity is displayed
+        Intents.intended(hasComponent(AddNewImageActivity.class.getName()));
 
         // Starter AddNewImageActivity og simulerer valg av bilde
-        ActivityScenario<AddNewImageActivity> scenario = ActivityScenario.launch(AddNewImageActivity.class);
+        // ActivityScenario<AddNewImageActivity> scenario = ActivityScenario.launch(AddNewImageActivity.class);
         //Intents.inteded er en funksjon som brukes til å verifisere at en spesefikk intent har blitt sendt
         Intents.intended(hasComponent(AddNewImageActivity.class.getName()));
         Intent imageTest = new Intent();
@@ -97,26 +103,4 @@ public class GalleryTests {
         onView(withId(R.id.myRecyclerView)).check(matches(hasChildCount(4)));
         Intents.release();
     }
-
-    /**
-     * Verifiserer at 'legg til'-knappen i GalleryActivity starter AddNewImageActivity.
-     * Denne testen sjekker:
-     * 1. Synligheten og klikkbarheten til 'legg til'-knappen.
-     * 2. At riktig aktivitet startes ved å klikke på 'legg til'-knappen.
-     */
-    @Test
-    public void testAddButtonGoesToCorrectActivity(){
-        Intents.init();
-        //Tests the add Button in Gallery
-        onView(withId(R.id.add_btn)).check(matches(isDisplayed()));
-        onView(withId(R.id.add_btn)).check(matches(isClickable()));
-        onView(withId(R.id.add_btn)).perform(click());
-
-        //Checks if the correct Activity is displayed
-        Intents.intended(hasComponent(AddNewImageActivity.class.getName()));
-
-        Intents.release();
-    }
-
-
 }

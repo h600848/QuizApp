@@ -21,10 +21,11 @@ import java.util.List;
  * Den håndterer visning av quizspørsmål, opptak av svar og viser oppdaterte poengsummer og forsøk.
  */
 public class QuizActivity extends AppCompatActivity {
-    private ImageView quizImageView; // ImageView for å vise gjeldende quiz-bilde
+    public ImageView quizImageView; // ImageView for å vise gjeldende quiz-bilde
     private TextView textViewQuiz; // TextView for å vise poengsum og antall forsøk
-    private Button answerButton1, answerButton2, answerButton3;
+    public Button answerButton1, answerButton2, answerButton3;
     private ImageViewModel imageViewModel; // ViewModel som håndterer data for denne aktiviteten
+    private ImageEntity currentImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
         bindViews();
         setupViewModel();
+        observeSetup();
 
         // Håndterer tilstandsendringer, som skjermrotasjon, ved å gjenopprette tilstanden
         if (savedInstanceState != null) {
@@ -73,7 +75,7 @@ public class QuizActivity extends AppCompatActivity {
      */
     private void prepareNextRound(List<ImageEntity> imageEntities) {
         if (!imageEntities.isEmpty()) {
-            ImageEntity currentImage = imageViewModel.selectRandomImage(imageEntities);
+            currentImage = imageViewModel.selectRandomImage(imageEntities);
             // Konverterer bildets sti til en URI
             Uri currentUri = Uri.parse(currentImage.getImagePath().toString());
             // Oppdaterer ViewModel med den nåværende bildets URI
@@ -98,9 +100,13 @@ public class QuizActivity extends AppCompatActivity {
 
 
             }
-
         }
     }
+
+    public String getCurrentImageName() {
+        return currentImage.getImageName();
+    }
+
 
     /**
      * Sjekker om det valgte svaret er korrekt, oppdaterer score og forsøk, og viser oppdatert informasjon i TextView.
@@ -132,5 +138,16 @@ public class QuizActivity extends AppCompatActivity {
         if(imageUriAsString != null) {
             outState.putString("currentImageUri", imageUriAsString);
         }
+    }
+
+    private void observeSetup() {
+        imageViewModel.getAllImages().observe(this, imageEntities -> {
+            if (imageEntities.isEmpty()) {
+                // Legger til standardbilder om ingen bilder finnes fra før
+                imageViewModel.insertImage(new ImageEntity("Gorilla", Uri.parse("android.resource://com.example.quizapp/" + R.drawable.gorilla)));
+                imageViewModel.insertImage(new ImageEntity("Polar bear", Uri.parse("android.resource://com.example.quizapp/" + R.drawable.isbjorn)));
+                imageViewModel.insertImage(new ImageEntity("Fox", Uri.parse("android.resource://com.example.quizapp/" + R.drawable.fox)));
+            }
+        });
     }
 }
